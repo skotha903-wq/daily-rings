@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily Rings</title>
+
+<style>
+:root{
+  --cook:#FF9F0A;
+  --work:#0A84FF;
+  --clean:#30D158;
+  --read:#FF6B6B;
+  --bg:#000;
+  --card:#1c1c1e;
+  --sub:#8e8e93;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+  display:flex;
+  justify-content:center;
+}
+
+.container{
+  width:100%;
+  max-width:430px;
+  padding:40px 20px 200px;
+}
+
+h1{
+  font-weight:800;
+  margin-bottom:20px;
+}
+
+.rings{
+  background:var(--card);
+  padding:30px;
+  border-radius:28px;
+  display:flex;
+  justify-content:center;
+  margin-bottom:30px;
+  position:relative;
+}
+
+svg{ transform:rotate(-90deg); }
+
+circle{
+  fill:none;
+  stroke-linecap:round;
+  transition:stroke-dashoffset .5s ease;
+}
+
+.center{
+  position:absolute;
+  text-align:center;
+}
+
+.center h2{
+  margin:0;
+  font-size:28px;
+  font-weight:900;
+}
+
+.center p{
+  margin:0;
+  font-size:12px;
+  color:var(--sub);
+}
+
+.card{
+  background:var(--card);
+  padding:16px;
+  border-radius:18px;
+  margin-bottom:12px;
+}
+
+button{
+  background:#2c2c2e;
+  color:#fff;
+  border:none;
+  padding:8px 14px;
+  border-radius:10px;
+  cursor:pointer;
+  margin-right:6px;
+}
+
+input{
+  width:70px;
+  background:#2c2c2e;
+  border:none;
+  color:#fff;
+  padding:6px;
+  border-radius:8px;
+  text-align:center;
+}
+
+.category-title{
+  font-size:14px;
+  color:var(--sub);
+  margin-bottom:6px;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h1>Daily Rings</h1>
+
+<div class="rings">
+  <svg width="220" height="220">
+
+    <!-- Cooking (outer) -->
+    <circle cx="110" cy="110" r="95" stroke="rgba(255,159,10,.15)" stroke-width="14"/>
+    <circle id="ring-cook" cx="110" cy="110" r="95" stroke="var(--cook)" stroke-width="14"
+      stroke-dasharray="597" stroke-dashoffset="597"/>
+
+    <!-- Work -->
+    <circle cx="110" cy="110" r="75" stroke="rgba(10,132,255,.15)" stroke-width="14"/>
+    <circle id="ring-work" cx="110" cy="110" r="75" stroke="var(--work)" stroke-width="14"
+      stroke-dasharray="471" stroke-dashoffset="471"/>
+
+    <!-- Clean -->
+    <circle cx="110" cy="110" r="55" stroke="rgba(48,209,88,.15)" stroke-width="14"/>
+    <circle id="ring-clean" cx="110" cy="110" r="55" stroke="var(--clean)" stroke-width="14"
+      stroke-dasharray="345" stroke-dashoffset="345"/>
+
+    <!-- Read -->
+    <circle cx="110" cy="110" r="35" stroke="rgba(255,107,107,.15)" stroke-width="14"/>
+    <circle id="ring-read" cx="110" cy="110" r="35" stroke="var(--read)" stroke-width="14"
+      stroke-dasharray="220" stroke-dashoffset="220"/>
+
+  </svg>
+
+  <div class="center">
+    <h2 id="percent">0%</h2>
+    <p>Today</p>
+  </div>
+</div>
+
+<div id="tasks"></div>
+
+</div>
+
+<script>
+
+const rings = {
+  cook:{name:"Cooking",goal:45,done:0,circ:597,timer:null},
+  work:{name:"Work / Study",goal:60,done:0,circ:471,timer:null},
+  clean:{name:"Cleaning",goal:30,done:0,circ:345,timer:null},
+  read:{name:"Reading",goal:20,done:0,circ:220,timer:null}
+};
+
+function updateRings(){
+  let totalPct=0;
+  let count=0;
+
+  Object.keys(rings).forEach(key=>{
+    const r=rings[key];
+    const pct=Math.min(r.done/r.goal,1);
+    const offset=r.circ-(r.circ*pct);
+    document.getElementById("ring-"+key).style.strokeDashoffset=offset;
+    totalPct+=pct;
+    count++;
+  });
+
+  document.getElementById("percent").innerText=
+    Math.round((totalPct/count)*100)+"%";
+}
+
+function startTimer(cat){
+  if(rings[cat].timer) return;
+
+  rings[cat].timer=setInterval(()=>{
+    rings[cat].done += 1/60;
+    updateRings();
+    renderTasks();
+  },1000);
+}
+
+function stopTimer(cat){
+  clearInterval(rings[cat].timer);
+  rings[cat].timer=null;
+}
+
+function setGoal(cat,value){
+  rings[cat].goal=parseInt(value)||1;
+  updateRings();
+}
+
+function renderTasks(){
+  const container=document.getElementById("tasks");
+  container.innerHTML="";
+
+  Object.keys(rings).forEach(key=>{
+    const r=rings[key];
+
+    const div=document.createElement("div");
+    div.className="card";
+    div.innerHTML=`
+      <div class="category-title">${r.name}</div>
+      Goal: <input type="number" value="${r.goal}"
+      onchange="setGoal('${key}',this.value)"> min<br><br>
+      Time: ${r.done.toFixed(1)} min<br><br>
+      <button onclick="startTimer('${key}')">Start</button>
+      <button onclick="stopTimer('${key}')">Stop</button>
+    `;
+    container.appendChild(div);
+  });
+}
+
+renderTasks();
+updateRings();
+
+</script>
+
+</body>
+</html>
