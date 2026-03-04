@@ -1,0 +1,18 @@
+body {
+  background-color: #000000;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+h1{
+    text-align: center;
+    color: #ff0000;
+    letter-spacing: 4px;  
+}
+li{
+    background-color: #1c1c1c;
+    padding: 15px;
+    margin: 15px;
+    border-radius:15px;
+    list-style:none;
+}
