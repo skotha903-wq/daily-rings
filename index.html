@@ -6,16 +6,16 @@
     <meta charset="UTF-8">
   </head>
   <body>
-    <h1>Daily Rings</h1>
     <script src="script.js"></script>
+    <h1>Daily Rings</h1>
     <ul>
-      <li>🧘 Meditation</li>
-        <li>🫙 Fill Water Jug</li>
-        <li>🤖 Solace Study/Work</li>
-        <li>📖 Reading Books</li>
-        <li>🍳 Cooking</li>
-        <li>🧹 Cleaning</li>
-        <li>💊 Taking Tablets</li>
+      <li id="meditation">🧘 Meditation <span>00:00:00</span> <button onclick="toggleTimer('meditation')">Start</button></li>
+        <li id="fill-water-jug">🫙 Fill Water Jug <span>00:00:00</span> <button onclick="toggleTimer('fill-water-jug')">Start</button></li>
+        <li id="solace-study">🤖 Solace Study/Work <span>00:00:00</span> <button onclick="toggleTimer('solace-study')">Start</button></li>
+        <li id="reading-books">📖 Reading Books <span>00:00:00</span> <button onclick="toggleTimer('reading-books')">Start</button></li>
+        <li id="cooking">🍳 Cooking <span>00:00:00</span> <button onclick="toggleTimer('cooking')">Start</button></li>
+        <li id="cleaning">🧹 Cleaning <span>00:00:00</span> <button onclick="toggleTimer('cleaning')">Start</button></li>
+        <li id="taking-tablets">💊 Taking Tablets <span>00:00:00</span> <button onclick="toggleTimer('taking-tablets')">Start</button></li>
     </ul>
   </body>
 </html>
