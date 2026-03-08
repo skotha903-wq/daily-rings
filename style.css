@@ -16,3 +16,21 @@ li{
     border-radius:15px;
     list-style:none;
 }
+h2{
+    text-align: center;
+    color: #ff0000;
+    margin-top: 30px;
+}
+.progress-bar
+{
+    background-color: #1c1c1c;
+    border-radius:15px;
+    height:20px;
+    margin:10px 0;
+}
+.progress-fill{
+    background-color: #ff0000;
+    height:20px;
+    border-radius:15px;
+    width:0%;
+}
